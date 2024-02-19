@@ -3,6 +3,7 @@
 #include "Cuadrado.h"
 #include "Triangulo.h"
 #include "Rectangulo.h"
+#include "Figura.h"
 
 namespace CppCLRWinFormsProject {
 
@@ -12,6 +13,7 @@ namespace CppCLRWinFormsProject {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Collections::Generic;
 
 	/// <summary>
 	/// Summary for Form1
@@ -19,7 +21,6 @@ namespace CppCLRWinFormsProject {
 	public ref class Form1 : public System::Windows::Forms::Form
 	{
 	private:
-		float superficieTotal = 0;
 	private: System::Windows::Forms::Label^ labelSalida;
 	private: System::Windows::Forms::NumericUpDown^ numericUpDownCuadrado;
 	private: System::Windows::Forms::Button^ buttonCuadrado;
@@ -32,7 +33,9 @@ namespace CppCLRWinFormsProject {
 	private: System::Windows::Forms::Button^ buttonRectangulo;
 
 
-		   float perimetroTotal = 0;
+
+		   List<Figura^>^ listaDeFiguras;
+
 	public:
 		Form1(void)
 		{
@@ -70,6 +73,7 @@ namespace CppCLRWinFormsProject {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->listaDeFiguras = gcnew System::Collections::Generic::List<Figura^>();
 			this->textBoxRadio = (gcnew System::Windows::Forms::TextBox());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->labelSalida = (gcnew System::Windows::Forms::Label());
@@ -232,34 +236,42 @@ namespace CppCLRWinFormsProject {
 
 		}
 #pragma endregion
+		private: System::Void MuestraColeccion()
+		{
+			float superficieTotal = 0;
+			float perimetroTotal = 0;
+			for each (Figura^ var in this->listaDeFiguras)
+			{
+				superficieTotal += var->dameSuperficie();
+				perimetroTotal += var->damePerimetro();
+			}
+			String^ TextoSalida = "SuperficieTotal: " + superficieTotal + " Perimetro: " + perimetroTotal;
+			this->labelSalida->Text = TextoSalida;
+
+
+		}
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ texto = textBoxRadio->Text;
 		int oper1 = Convert::ToInt32(texto);
 		Circulo^ MiCirculo = gcnew Circulo(oper1, 2, -100);
-		this->superficieTotal += MiCirculo->dameSuperficie();
-		this->perimetroTotal += MiCirculo->damePerimetro();
-		String^ TextoSalida = "SuperficieTotal: " + this->superficieTotal + " Perimetro: " + this->perimetroTotal;
-		this->labelSalida->Text = TextoSalida;
+		this->listaDeFiguras->Add(MiCirculo);
+		this->MuestraColeccion();
 	}
 	private: System::Void buttonCuadrado_Click(System::Object^ sender, System::EventArgs^ e) {
 		int oper1 = (int)this->numericUpDownCuadrado->Value;
 		Cuadrado^ MiCuadrado = gcnew Cuadrado(oper1, 2, -100);
-		this->superficieTotal += MiCuadrado->dameSuperficie();
-		this->perimetroTotal += MiCuadrado->damePerimetro();
-		String^ TextoSalida = "SuperficieTotal: " + this->superficieTotal + " Perimetro: " + this->perimetroTotal;
-		this->labelSalida->Text = TextoSalida;
+		this->listaDeFiguras->Add(MiCuadrado);
+		this->MuestraColeccion();
 	}
-private: System::Void buttonTriangulo_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void buttonTriangulo_Click(System::Object^ sender, System::EventArgs^ e) {
 	int lado1 = (int)this->numericUpDownLado1->Value;
 	int lado2 = (int)this->numericUpDownLado2->Value;
 	int lado3 = (int)this->numericUpDownLado3->Value;
 	Triangulo^ MiTriangulo = gcnew Triangulo(lado1,lado2,lado3, 2, -100);
-	this->superficieTotal += MiTriangulo->dameSuperficie();
-	this->perimetroTotal += MiTriangulo->damePerimetro();
-	String^ TextoSalida = "SuperficieTotal: " + this->superficieTotal + " Perimetro: " + this->perimetroTotal;
-	this->labelSalida->Text = TextoSalida;
+	this->listaDeFiguras->Add(MiTriangulo);
+	this->MuestraColeccion();
 }
 private: System::Void labelSalida_Click(System::Object^ sender, System::EventArgs^ e) {
 }
@@ -267,10 +279,8 @@ private: System::Void buttonRectangulo_Click(System::Object^ sender, System::Eve
 	int ladoCorto = (int)this->numericUpDownLadoCorto->Value;
 	int ladoLargo = (int)this->numericUpDownLadoLargo->Value;
 	Rectangulo^ MiRectangulo = gcnew Rectangulo(ladoCorto, ladoLargo, 2, -100);
-	this->superficieTotal += MiRectangulo->dameSuperficie();
-	this->perimetroTotal += MiRectangulo->damePerimetro();
-	String^ TextoSalida = "SuperficieTotal: " + this->superficieTotal + " Perimetro: " + this->perimetroTotal;
-	this->labelSalida->Text = TextoSalida;
+	this->listaDeFiguras->Add(MiRectangulo);
+	this->MuestraColeccion();
 }
 };
 }
