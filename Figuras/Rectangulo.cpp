@@ -31,3 +31,13 @@ Rectangulo::Rectangulo(int ladoLargo, int ladoCorto, int x, int y) : Figura (x,y
     this->ladoLargo = ladoLargo;
     this->ladoCorto = ladoCorto;
 }
+
+float Rectangulo::damePerimetro()
+{
+    return this->ladoCorto * 2 + this->ladoLargo * 2;
+}
+
+float Rectangulo::dameSuperficie()
+{
+    return this->ladoCorto * this->ladoLargo;
+}

@@ -28,6 +28,7 @@ float Triangulo::damePerimetro()
 
 float Triangulo::dameSuperficie()
 {
+    float s = (this->lado1 + this->lado2 + this->lado3) / 2;
     //https://www.matesfacil.com/matematicos/Heron/Heron-de-Alejandria-formula-area-triangulo-metodo-aproximar-raiz-cuadrada-demostracion.html
-    return 0;
+    return System::Math::Sqrt(s*(s-lado1)*(s-lado2)*(s-lado3));
 }
